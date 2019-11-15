@@ -48,13 +48,13 @@ pre: $(core_dir) $(os_dir)
 	$(CC) $(CFLAGS) -c -o $@ $< -I .. $(LDFLAGS)
 
 clean:
-	@if [ -f $(OBJ)/script ]; then \
-		rm $(OBJ); \
+	@if [ -e ${OBJ} ]; then \
+		rm ${OBJ}; \
 	fi;
-	@if [ -f $(TEST)/script ]; then \
-		rm $(TEST); \
+	@if [ -e ${TEST} ]; then \
+		rm ${TEST}; \
 	fi;
-	@if [ -f $(target)/script ]; then \
+	@if [ -e $(target) ]; then \
 		rm $(target); \
 	fi;
 	$(shell find . -name *.o -delete)
