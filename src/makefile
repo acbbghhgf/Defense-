@@ -3,15 +3,19 @@ out_dir=.
 core_dir=$(pwd)/core
 os_dir=$(pwd)/os
 main_dir=$(pwd)/main
+third_dir=$(pwd)/third
 
 obj_src_dir=$(pwd)/core $(pwd)/os
 main_src=$(shell find ${main_dir} -name "*.c")
 mains=$(patsubst %c,%o,${main_src})
+third_src=$(shell find ${third_dir} -name "*.c")
+thirds=$(patsubst %c,%o,${third_src})
 obj_org_src=${shell find $(obj_src_dir) -name "*.c"}
 obj_src=${filter-out %wtk_select.c,$(obj_org_src)}
 objs=${patsubst %.c,%.o,${obj_src}}
 target=libwtk.a
 OBJ=WServer
+TEST=WClient
 
 CC=gcc
 CFLAGS=-Wall -Werror -g -O3
@@ -26,25 +30,31 @@ all: $(OBJ)
 wwk: $(target)
 	echo $(target)
 
+test:${TEST}
+	echo ${TEST}
+
 $(target): $(objs)
 	$(AR) rcs $@ $^
 
 $(OBJ): $(objs) $(mains)
 	$(CC) -o $@ $^ ${CFLAGS}
 
-pre: $(core_dir) $(os_dir)
+$(TEST): $(objs) $(thirds)
+	$(CC) -o $@ $^ ${CFLAGS}
 
-# ../third/sqlite/sqlite3.o: ../third/sqlite/sqlite3.c
-# 	${CC} -I. -g -O3 -Wall -funroll-loops -c -o $@ $<;
+pre: $(core_dir) $(os_dir)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $< -I .. $(LDFLAGS)
 
-test:test.c
-	$(CC) test.c -o ${TEST} $(TEST_LD)
-
 clean:
 	@if [ -f $(OBJ)/script ]; then \
 		rm $(OBJ); \
+	fi;
+	@if [ -f $(TEST)/script ]; then \
+		rm $(TEST); \
+	fi;
+	@if [ -f $(target)/script ]; then \
+		rm $(target); \
 	fi;
 	$(shell find . -name *.o -delete)
