@@ -4,7 +4,7 @@
 #include <math.h>
 #include "wwk_str.h"
 #include "wwk_strbuf.h"
-#include "wwk_source.h"
+#include "core/cfg/wwk_source.h"
 
 wwk_string_t* wwk_string_new(int len)
 {

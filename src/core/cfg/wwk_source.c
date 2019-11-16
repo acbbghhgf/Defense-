@@ -2,9 +2,11 @@
 	> File Name: wwk_source.c
 	> Author: 
 	> Mail: 
-	> Created Time: Tue 12 Nov 2019 06:47:13 PM PST
+	> Created Time: Fri 15 Nov 2019 06:58:19 PM PST
  ************************************************************************/
-#include "wwk_source.h"
+
+
+#include "core/cfg/wwk_source.h"
 #include <ctype.h>
 #include <math.h>
 #include <float.h>
@@ -17,6 +19,7 @@
 *byte1 byte2 --translate to->byte2 byte1
 */
 //void SwapShort(short *p)
+
 void wwk_swap_short(short *p)
 {
 	char temp,*q;
@@ -58,6 +61,7 @@ void wwk_swap_int32(int *i)
 
 
 /* check big endian or little endian.*/
+//return true- little endian, false- big endian 
 int wwk_is_little_endian()
 {
 	/*
@@ -1322,5 +1326,3 @@ end:
 	wwk_source_clean_file(&(src));
 	return p;
 }
-
-

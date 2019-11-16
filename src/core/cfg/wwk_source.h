@@ -2,7 +2,7 @@
 	> File Name: wwk_source.h
 	> Author: 
 	> Mail: 
-	> Created Time: Tue 12 Nov 2019 06:45:18 PM PST
+	> Created Time: Fri 15 Nov 2019 06:49:18 PM PST
  ************************************************************************/
 
 #ifndef _WWK_SOURCE_H
@@ -121,6 +121,4 @@ float* wwk_file_read_float(char *fn,int *n);
 #ifdef __cplusplus
 };
 #endif
-
-
 #endif

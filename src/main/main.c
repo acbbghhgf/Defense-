@@ -10,7 +10,13 @@
  
 #define MAXLINE 80
 #define SERV_PORT 8000
- 
+#define EXT_FILE "../ext/wserver.cfg"
+
+void wwk_error_handle(void)
+{
+    wwk_debug("not found ext file .\n");
+}
+
 int main(void)
 {
     struct sockaddr_in servaddr, cliaddr;
@@ -20,6 +26,8 @@ int main(void)
     char str[INET_ADDRSTRLEN];
     int i, n;
     int ret = 0;
+
+
  
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     
