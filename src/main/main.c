@@ -1,4 +1,6 @@
 #include "core/wwk_type.h"
+#include "core/wwk_str,h"
+#include "core/cfg/wwk_main_cfg.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,8 +19,10 @@ void wwk_error_handle(void)
     wwk_debug("not found ext file .\n");
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
+    wwk_string_t *main_cfg_file;
+    int main_serv_port;
     struct sockaddr_in servaddr, cliaddr;
     socklen_t cliaddr_len;
     int listenfd, connfd;
@@ -27,7 +31,20 @@ int main(void)
     int i, n;
     int ret = 0;
 
-
+    if(argc < 2)
+    {
+        wwk_debug("Use defaule ext file.\n");
+        main_cfg_file = wwk_string_dup(EXT_FILE);
+    }
+    else{
+        //process param
+        //需要解析传递的参数，例如 -v -d -c 等等方式
+        main_cfg_file = wwk_string_dup(argv[1]);
+    }
+    
+    //解析配置文件(需要添加参数类型分辨的函数处理)
+    //例如：readCFG_int, readCFG_str
+    // readCFG(main_cfg_file->data, "SERV_PORT", )
  
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     
