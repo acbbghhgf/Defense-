@@ -1,6 +1,7 @@
 #include "core/wwk_type.h"
 #include "core/wwk_str,h"
 #include "core/cfg/wwk_main_cfg.h"
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +18,64 @@
 void wwk_error_handle(void)
 {
     wwk_debug("not found ext file .\n");
+}
+
+typedef struct wwk_main_param{
+    int server_port;
+    wwk_string_t *ext_file;
+}wwk_main_param_t;
+
+static struct option long_options[] = {
+    {"ext file name", required_argument, NULL, 'E'},
+    {"server port", required_argument, NULL,'P'},
+    {"help", no_argument, NULL,'H'},
+    {0, 0, 0, 0}
+};
+
+static void wwk_usage(FILE *fp, int argc, char **argv)  
+{  
+        fprintf(fp,  
+                 "Usage: %s [options]\n\n"  
+                 "Version 1.3\n"  
+                 "Options:\n"  
+                 "-e | --ext file name   Video device name [%s]\n"  
+                 "-h | --help          Print this message\n"  
+                 "-s | --server port          Use memory mapped buffers [default]\n"    
+                 "",  
+                 argv[0], dev_name, frame_count);  
+}  
+
+wwk_main_param_t *wwk_getopt(int argc, char **argv)
+{
+    wwk_main_param_t *wk = wwk_malloc(sizeof(*wk));
+    int c, idx;
+    for(;;)
+    {
+        c = getopt_long(argc, argv, "e:p:h", long_options, &idx);
+        if(-1 == c)
+        {
+            break;
+        }
+        switch (c)
+        {
+        case 0:
+            wwk_debug("opt case 0\n");
+            break;
+        case 'e':
+            wwk_debug("opt case e\n");
+            wk->ext_file = wwk_string_dup(optarg);
+            break;
+        case 'p':
+            wwk_debug("opt case p\n");
+            wk->server_port = strtol(optarg, NULL, 0);
+            break;
+        default:
+            wwk_usage(stderr, argc, argv);
+            exit(EXIT_FAILURE);
+            break;
+        }
+    }
+    return wk;
 }
 
 int main(int argc, char **argv)
